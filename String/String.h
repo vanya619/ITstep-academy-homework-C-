@@ -21,18 +21,6 @@ public:
 	~String();
 };
 
-int main()
-{
-	String A("My name Ivan");
-	A.AddStr("! Hello World");
-	A.AddStr("1");
-	//	cout << A.Str() << endl;
-	A.PasteSymb(2, 'c');
-	cout << A.Str() << endl;
-	cout << A.Len() << endl;
-	return 0;
-}
-
 String::String(const char* str)
 {
 	size = strlen(str) + 1;
