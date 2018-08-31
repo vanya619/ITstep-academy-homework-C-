@@ -7,12 +7,11 @@ private:
 
 	struct element
 	{
-		element *next;
 		element *previous;
 		Type data;
 
 		element()
-			:next(nullptr), previous(nullptr)
+			:previous(nullptr)
 		{}
 
 		element(Type _data)
@@ -37,7 +36,7 @@ public:
 		size = obj.size;
 	}
 
-	 Stack& getCopy () const
+	Stack& GetCopy() const
 	{
 		Stack *copy = new Stack;
 		element *iterator = top_element;
@@ -47,21 +46,22 @@ public:
 			copy->push(iterator->data);
 			iterator = iterator->previous;
 		}
+		copy->size = size;
 		return *copy;
 	}
 
-	 Stack& operator= (Stack& obj)
-	 {
-		 if (&obj != this)
-		 {
-			 ~Stack();
-			 top_element = obj.getCopy().top_element;
-			 size = obj.size;
-		 }
-		 return *this;
-	 }
+	Stack& operator= (Stack& obj)
+	{
+		if (&obj != this)
+		{
+			ClearStack();
+			top_element = obj.getCopy().top_element;
+			size = obj.size;
+		}
+		return *this;
+	}
 
-	void push(Type _data)
+	void Push(Type _data)
 	{
 		if (!top_element)
 		{
@@ -70,31 +70,31 @@ public:
 		}
 		else
 		{
-			top_element->next = new element(_data);
-			top_element->next->previous = top_element;
-			top_element = top_element->next;
+			element* newElement = new element(_data);
+			newElement->previous = top_element;
+			top_element = newElement;
 			++size;
 		}
 	}
 
-	inline bool nullOrEmpty()
+	inline bool NullOrEmpty()
 	{
 		return top_element;
 	}
 
-	inline int getSize()
+	inline int GetSize()
 	{
 		return size;
 	}
 
-	Type pop()
+	Type Pop()
 	{
 		if (size)
 		{
-			element del = top_element;
+			element* del = top_element;
 			Type ret = del->data;
 			top_element = top_element->previous;
-			top_element->next = nullptr;
+			delete del;
 			return ret;
 		}
 		throw std::exception("Stack is null");
@@ -111,15 +111,21 @@ public:
 		return oss;
 	}
 
-	~Stack()
+	void ClearStack()
 	{
 		element *iterator;
+
 		while (top_element)
 		{
 			iterator = top_element;
 			top_element = top_element->previous;
 			delete iterator;
 		}
+		size = 0;
+	}
+
+	~Stack()
+	{
+		ClearStack();
 	}
 };
-
