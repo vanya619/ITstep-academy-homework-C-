@@ -5,32 +5,32 @@ class Vector
 {
 private:
 
-	int addlSize;
+	int addSize;
 	int size;
 	Type* arr;
 
 public:
 
 	Vector()
-		: arr{ nullptr }, size{ 0 }, addlSize{ 0 }
+		: arr{ nullptr }, size{ 0 }, addSize{ 0 }
 	{}
 
 	Vector(Type _data)
-		: addlSize{ 15 }, size{ 10 }, arr{ new Type[addlSize] }
-
+		//: addSize{ 15 }, size{ 1 }, arr{ new Type[addSize] }
 	{
-		arr[0] = _data;
+		//arr[0] = _data;
+		Add(_data);
 	}
 
 	Vector(const Vector& obj)
-		: addlSize{ obj.addlSize }, size{ obj.size }, arr{ new Type[obj.addlSize] }
+		: addSize{ obj.addSize }, size{ obj.size }, arr{ new Type[obj.addSize] }
 	{
 		for (int i = 0; i < obj.size; ++i)
 			arr[i] = obj.arr[i];
 	}
 
 	Vector(const std::initializer_list<Type>& list)
-		: addlSize{ static_cast<int>(list.size() * 1.5) }, size{ static_cast<int>(list.size()) }, arr{ new Type[addlSize] }
+		: addSize{ static_cast<int>(list.size() * 1.5) }, size{ static_cast<int>(list.size()) }, arr{ new Type[addSize] }
 	{
 		int i = 0;
 		for (const Type& val : list)
@@ -43,8 +43,8 @@ public:
 		{
 			Clear();
 
-			arr = new Type[obj.addlSize];
-			addlSize = obj.addlSize;
+			arr = new Type[obj.addSize];
+			addSize = obj.addSize;
 			size = obj.size;
 
 			for (int i = 0; i < size; ++i)
@@ -66,14 +66,39 @@ public:
 
 	int Capacity() const
 	{
-		return addlSize - size;
+		return addSize - size;
 	}
 
 	void Swap(Vector& obj)
 	{
 		std::swap(arr, obj.arr);
 		std::swap(size, obj.size);
-		std::swap(addlSize, obj.addlSize);
+		std::swap(addSize, obj.addSize);
+	}
+
+	void Add(Type _data)
+	{
+		if (!arr)
+		{
+			addSize = 15;
+			size = 1;
+			arr = new Type[addSize];
+			arr[0] = _data;
+		}
+		else if (addSize == size)
+		{
+			addSize = static_cast<int>(addSize * 1.5);
+			Type* copy = new Type[addSize];
+			for (int i = 0; i < size; ++i)
+				copy[i] = arr[i];
+			copy[size++] = _data;
+			delete[] arr;
+			arr = copy;
+		}
+		else
+		{
+			arr[size++] = _data;
+		}
 	}
 
 	bool Empty() const
@@ -88,7 +113,7 @@ public:
 		if (arr)
 			delete[] arr;
 		size = 0;
-		addlSize = 0;
+		addSize = 0;
 	}
 
 	template <typename Type>
@@ -104,5 +129,3 @@ public:
 		Clear();
 	}
 };
-
-
