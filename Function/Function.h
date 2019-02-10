@@ -42,7 +42,7 @@ private:
 public:
 
 	Function()
-		: funk() {}
+		: func() {}
 
 	template <typename FuncT>
 	Function(FuncT f)
