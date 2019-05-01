@@ -8,8 +8,8 @@ private:
 	int size;
 
 public:
-	Collection(Type count)
-		: collection{ new Type{ count } }, size{ 1 }
+	Collection(Type obj)
+		: collection{ new Type{ obj } }, size{ 1 }
 	{}
 
 	Collection(Type *val, int size_)
