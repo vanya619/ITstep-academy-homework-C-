@@ -24,7 +24,7 @@ public:
 		:collection{ new Type[list.size()] }, size{ static_cast<int>(list.size()) }
 	{
 		int i = 0;
-		for (const int& val : list)
+		for (const auto& val : list)
 			collection[i++] = val;
 	}
 
